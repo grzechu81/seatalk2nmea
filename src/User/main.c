@@ -11,6 +11,7 @@ void sendNmeaData(st_buffer_t* b);
 st_buffer_t rawBuffer;
 wind_t wind;
 
+//main function
 int main(void)
 {
 	uint8_t result = 0;
