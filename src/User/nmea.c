@@ -134,7 +134,7 @@ uint8_t stringLength(void)
 {
 	uint8_t i = 0;
 	
-	while(txBuffer[i] != 0 || i >= UART_TX_BUF_LEN)
+	while(txBuffer[i] != 0 || i < UART_TX_BUF_LEN)
 		i++;
 	
 	return i;
