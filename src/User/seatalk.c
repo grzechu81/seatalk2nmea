@@ -59,10 +59,10 @@ uint8_t ST_ReadData(st_buffer_t* buffer)
 					data = value & 0x00ff;
 					
 					//Are we interested with this datagram ?
-					if(data == WIND_ANGLE_ID || 
-						 data == WIND_SPEED_ID || 
-						 data == SPEED_THR_WTR || 
-						 data == DEPTH_ID)
+					if(data == AWA_ID || 
+						 data == AWS_ID || 
+						 data == STW_ID || 
+						 data == DBT_ID)
 					{
 						buffer->buffer[(buffer->pos)++] = data;
 						rxState = RX_LENGTH;
@@ -107,21 +107,22 @@ uint8_t ST_ReadData(st_buffer_t* buffer)
 	return retVal;
 }
 
-uint8_t ST_IsComplete(st_buffer_t* buffer)
+uint8_t ST_IsComplete(st_buffer_t* data)
 {
 	uint8_t length = 0;
 	
-	if(buffer->pos < MINIMAL_DATAGRAM_LENGTH)
+	if(data->pos < MINIMAL_DATAGRAM_LENGTH)
 		return ERR_INCOMPLETE;
 	
-	length = (buffer->buffer[1] & 0x0f) + MINIMAL_DATAGRAM_LENGTH;
+	length = (data->buffer[1] & 0x0f) + MINIMAL_DATAGRAM_LENGTH;
 	
-	if(length < buffer->pos)
+	if(length < data->pos)
 		return ERR_INCOMPLETE;
 	
-	if(buffer->buffer[0] == WIND_ANGLE_ID ||
-		 buffer->buffer[0] == WIND_SPEED_ID ||
-	   buffer->buffer[0] == DEPTH_ID)
+	if((data->buffer[0] == AWA_ID) ||
+		 (data->buffer[0] == AWS_ID) ||
+	   (data->buffer[0] == DBT_ID) ||
+		 (data->buffer[0] == STW_ID))
 	{
 		return ERR_SUCCESS;
 	}

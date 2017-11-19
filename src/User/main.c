@@ -74,21 +74,21 @@ void sendNmeaData(st_buffer_t* b)
 	
 	switch(type)
 	{
-		case WIND_ANGLE_ID:
+		case AWA_ID:
 			temp = ((b->buffer[2] << 8 ) | b->buffer[3]) / 2;
 			wind.windDir = temp;
 			NMEA_SendMWV(&wind);
 			break;
-		case WIND_SPEED_ID:
+		case AWS_ID:
 			temp = (b->buffer[2] & 0x7f) + ((b->buffer[3] & 0x0f) / 10);
 			wind.windSpeed = temp;
 			NMEA_SendMWV(&wind);
 			break;
-		case DEPTH_ID:
+		case DBT_ID:
 			temp = (b->buffer[3] << 8 | b->buffer[4]) / 10;
 			NMEA_SendDBT(temp);
 			break;
-		case SPEED_THR_WTR:
+		case STW_ID:
 			temp = (b->buffer[2] << 8 | b->buffer[3]) / 10;
 			NMEA_SendVHW(temp);
 			break;

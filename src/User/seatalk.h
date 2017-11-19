@@ -5,10 +5,10 @@
 #define BUFFER_LEN 10
 #define MINIMAL_DATAGRAM_LENGTH 3
 
-#define SPEED_THR_WTR 20
-#define WIND_ANGLE_ID 10
-#define WIND_SPEED_ID 11
-#define DEPTH_ID      0
+#define STW_ID 20
+#define AWA_ID 10
+#define AWS_ID 11
+#define DBT_ID 0
 
 #define ERR_SUCCESS    0
 #define ERR_BUFFER_OVF 1
