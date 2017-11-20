@@ -31,7 +31,7 @@ void DBG_Send(char* str)
 	uint8_t i = 0;
 	if(str != 0)
 	{
-		while(str[i] != 0 || i < 0xff)
+		while(str[i] != 0x0 && i < 0xff)
 		{
 			while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET); 
 			USART_SendData(USART1, str[i]);

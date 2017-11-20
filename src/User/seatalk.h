@@ -5,10 +5,10 @@
 #define BUFFER_LEN 10
 #define MINIMAL_DATAGRAM_LENGTH 3
 
-#define STW_ID 20
-#define AWA_ID 10
-#define AWS_ID 11
-#define DBT_ID 0
+#define STW_ID 0x20
+#define AWA_ID 0x10
+#define AWS_ID 0x11
+#define DBT_ID 0x0
 
 #define ERR_SUCCESS    0
 #define ERR_BUFFER_OVF 1
