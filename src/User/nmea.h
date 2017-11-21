@@ -4,10 +4,10 @@
 
 typedef struct
 {
-	uint16_t windDir;
-	uint8_t windDirFr;
-	uint8_t windSpeed;
-	uint8_t windSpeedFr;
+    uint16_t windDir;
+    uint8_t windDirFr;
+    uint8_t windSpeed;
+    uint8_t windSpeedFr;
 } wind_t;
 
 void NMEA_Init(void);

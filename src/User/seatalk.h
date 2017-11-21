@@ -2,7 +2,7 @@
 #define _SEATALK_H
 #include "stm32f10x.h"
 
-#define BUFFER_LEN 10
+#define BUFFER_LEN 18
 #define MINIMAL_DATAGRAM_LENGTH 3
 
 #define STW_ID 0x20
@@ -21,8 +21,9 @@
 #define RX_DATA   2
 
 typedef struct {
-	uint8_t buffer[BUFFER_LEN];
-	uint8_t pos;
+    uint8_t buffer[BUFFER_LEN];
+    uint8_t pos;
+    uint8_t totalLength;
 } st_buffer_t;
 
 void ST_Init(void);
