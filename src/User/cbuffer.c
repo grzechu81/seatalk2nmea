@@ -1,44 +1,50 @@
 #include "cbuffer.h"
 
-uint8_t CB_Write(CircularBuffer_t* cb, uint16_t value)
-{
-    uint8_t next = cb->head + 1u;
-    if(next >= cb->size)
-        next = 0u;
-		
-    if(next == cb->tail)
-        return CB_BUFFER_FULL;
-		
-    cb->buffer[cb->head] = value;
-    cb->head = next;
-    return CB_SUCCESS;
+static uint8_t maskWrite(CircularBuffer_t* cb)  
+{ 
+    return cb->write & (cb->length - 1); 
 }
 
-uint8_t CB_Read(CircularBuffer_t* cb, uint16_t* value)
-{
-    if(cb->head == cb->tail)
-        return CB_BUFFER_EMPTY;
-		
-    uint8_t next = cb->tail + 1u;
-    if(next >= cb->size)
-        next = 0u;
-		
-    *value = *(cb->buffer + cb->tail);
-    cb->tail = next;
-    return CB_SUCCESS;
+static uint8_t maskRead(CircularBuffer_t* cb)  
+{ 
+    return cb->read & (cb->length - 1); 
 }
 
-uint8_t CB_Capacity(CircularBuffer_t* cb)
-{
-    if(cb->head == cb->tail)
+uint8_t CB_Write(CircularBuffer_t* cb, uint16_t val)  
+{ 
+    uint8_t retVal = CB_SUCCESS;
+
+    if(((cb->write) - (cb->read)) < cb->length)
     {
-        return cb->size - 1;
+        cb->buffer[maskWrite(cb)] = val; 
+        cb->write++;
     }
     else
     {
-        if(cb->head > cb->tail)
-            return cb->size - (cb->head - cb->tail) - 1;
-        else
-            return (cb->tail - cb->head) - 1;
+        retVal = CB_BUFFER_FULL;
     }
+
+    return retVal;
+}
+
+uint8_t CB_Read(CircularBuffer_t* cb, uint16_t* val)    
+{ 
+    uint8_t retVal = CB_SUCCESS;
+
+    if((cb->read) != (cb->write))
+    {
+        *val = cb->buffer[maskRead(cb)]; 
+        cb->read++;
+    }
+    else
+    {
+        retVal = CB_BUFFER_EMPTY;
+    }
+
+    return retVal;
+}
+
+uint8_t CB_Capacity(CircularBuffer_t* cb)
+{ 
+    return cb->length - (cb->write - cb->read); 
 }

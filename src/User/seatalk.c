@@ -7,9 +7,9 @@ uint16_t cbuffer[64];
 
 CircularBuffer_t st_cbuffer = {
     .buffer = cbuffer,
-    .head = 0,
-    .tail = 0,
-    .size = 64
+    .read = 0,
+    .write = 0,
+    .length = 64
 };
 
 void ST_Init(void)

@@ -8,10 +8,10 @@
 
 typedef struct 
 {
-    uint16_t* const buffer;
-    uint8_t head;
-    uint8_t tail;
-    const uint8_t size;
+    uint8_t read;
+    uint8_t write;
+    uint8_t length;
+    uint16_t* buffer;
 }CircularBuffer_t;
 
 uint8_t CB_Write(CircularBuffer_t* cb, uint16_t value);
