@@ -36,14 +36,6 @@ int main(void)
                 memset(&rawBuffer, 0, sizeof(st_buffer_t));
                 //LED_Off();
             }
-            else
-            {
-                (void)result;
-            }
-        }
-        else
-        {
-            (void)result;
         }
     }
 }

@@ -11,7 +11,6 @@
 char txBuffer[UART_TX_BUF_LEN];
 uint8_t txBufferLength;
 uint8_t txBufferPos;
-volatile uint8_t txPending;
 
 uint8_t calculateCRC(void);
 uint8_t stringLength(void);
@@ -23,7 +22,6 @@ void NMEA_Init(void)
 {
     txBufferLength = 0;
     txBufferPos = 0;
-    txPending = 0;
     
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
@@ -47,8 +45,6 @@ void NMEA_Init(void)
     nmeaUsart.USART_Mode = USART_Mode_Tx;
     USART_Init(USART2, &nmeaUsart);
     
-//    USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-
     nmeaNVIC.NVIC_IRQChannel = USART2_IRQn;
     nmeaNVIC.NVIC_IRQChannelPreemptionPriority = 0;
     nmeaNVIC.NVIC_IRQChannelSubPriority = 0;
@@ -109,9 +105,6 @@ void NMEA_SendVHW(uint16_t speedKn)
 //$INDBT,x.x,f,x.x,M,x.x,F*hh<CR><LF>
 void NMEA_SendDBT(uint16_t depth)
 {
-    if(txPending != 0)
-        return;
-    
     uint8_t crc = 0;
     uint8_t strLen = 0;
 
@@ -151,40 +144,21 @@ uint8_t calculateCRC(void)
         
         crc = crc ^ txBuffer[i];
     }
-
     return crc;
 }
 
 uint8_t stringLength(void)
 {
     uint8_t i = 0;
-
-    while(txBuffer[i] != 0 && i < UART_TX_BUF_LEN)
-        i++;
-
+    while(txBuffer[i++] != 0 && i < UART_TX_BUF_LEN);
     return i;
 }
 
 void sendStringOverUart(void)
 {
-//    uint8_t i = 0;
-
-//    while(txBuffer[i] != 0 || i <= UART_TX_BUF_LEN)
-//    {
-//        sendChar(txBuffer[i]);
-//        i++;
-//    }
-//    
     LED_On();
-    txPending = 1;
     txBufferPos = 0;
     USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-}
-
-void sendChar(char c)
-{
-    USART_SendData(USART2, c);
-    while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
 }
 
 void USART2_IRQHandler(void)
@@ -192,11 +166,9 @@ void USART2_IRQHandler(void)
     if(USART_GetITStatus(USART2, USART_IT_TXE))
     {
         USART_SendData(USART2, txBuffer[txBufferPos++]);
-        
         if(txBufferPos >= txBufferLength)
         {
             USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-            txPending = 0;
             LED_Off();
         }
     }
