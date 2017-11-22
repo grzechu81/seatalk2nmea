@@ -2,8 +2,8 @@
 #define _SEATALK_H
 #include "stm32f10x.h"
 
-#define BUFFER_LEN 18
 #define MINIMAL_DATAGRAM_LENGTH 3
+#define BUFFER_LEN 18
 
 #define STW_ID 0x20
 #define AWA_ID 0x10
@@ -29,8 +29,4 @@ typedef struct {
 void ST_Init(void);
 uint8_t ST_ReadData(st_buffer_t* buffer);
 uint8_t ST_IsComplete(st_buffer_t* buffer);
-uint8_t ST_GetDatagram(st_buffer_t* buffer);
-
-
-
 #endif

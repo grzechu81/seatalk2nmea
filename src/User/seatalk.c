@@ -43,8 +43,6 @@ void ST_Init(void)
     stNVIC.NVIC_IRQChannelSubPriority = 0;
     stNVIC.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&stNVIC);
-
-
     USART_Cmd(USART3,ENABLE);
 }
 
@@ -136,11 +134,6 @@ uint8_t ST_IsComplete(st_buffer_t* data)
     }
 
     return ERR_DROP;
-}
-
-uint8_t ST_GetDatagram(st_buffer_t* buffer)
-{
-    return 0;
 }
 
 void USART3_IRQHandler(void)

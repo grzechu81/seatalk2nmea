@@ -61,10 +61,11 @@ void NMEA_SendMWV(wind_t *wind)
     uint8_t strLen = 0;
     memset(txBuffer, 0, 40);
 
-    sprintf(txBuffer, "$INMWV,%d.%d,T,%d.%d,K,A*", wind->windDir, 
+    sprintf(txBuffer, "$INMWV,%d.%d,T,%d.%d,%c,A*", wind->windDir, 
         wind->windDirFr, 
         wind->windSpeed, 
-        wind->windSpeedFr);
+        wind->windSpeedFr,
+        wind->speedMs ? 'M' : 'K');
 
     crc = calculateCRC();
     strLen = stringLength();
@@ -103,14 +104,14 @@ void NMEA_SendVHW(uint16_t speedKn)
 }
 
 //$INDBT,x.x,f,x.x,M,x.x,F*hh<CR><LF>
-void NMEA_SendDBT(uint16_t depth)
+void NMEA_SendDBT(depth_t* depth)
 {
     uint8_t crc = 0;
     uint8_t strLen = 0;
 
     memset(txBuffer, 0, 40);
 
-    sprintf(txBuffer, "$INDBT,%d.0,f,,M,,F*", depth);
+    sprintf(txBuffer, "$INDBT,%d.%d,f,,M,,F*", depth->depth, depth->depthFr);
 
     crc = calculateCRC();
     strLen = stringLength();
