@@ -70,7 +70,8 @@ void NMEA_SendMWV(wind_t *wind)
     crc = calculateCRC();
     strLen = stringLength();
 
-    txBuffer[strLen] = toHex(crc >> 8);
+    strLen--; //skip the null string terminator
+    txBuffer[strLen++] = toHex(crc >> 4);
     txBuffer[strLen++] = toHex(crc & 0x0f);
     txBuffer[strLen++] = CR;
     txBuffer[strLen++] = LF;
@@ -93,7 +94,8 @@ void NMEA_SendVHW(uint16_t speedKn)
     crc = calculateCRC();
     strLen = stringLength();
 
-    txBuffer[strLen] = toHex(crc >> 8);
+    strLen--; //skip the null string terminator
+    txBuffer[strLen++] = toHex(crc >> 4);
     txBuffer[strLen++] = toHex(crc & 0x0f);
     txBuffer[strLen++] = CR;
     txBuffer[strLen++] = LF;
@@ -116,7 +118,8 @@ void NMEA_SendDBT(depth_t* depth)
     crc = calculateCRC();
     strLen = stringLength();
 
-    txBuffer[strLen] = toHex(crc >> 8);
+    strLen--; //skip the null string terminator
+    txBuffer[strLen++] = toHex(crc >> 4);
     txBuffer[strLen++] = toHex(crc & 0x0f);
     txBuffer[strLen++] = CR;
     txBuffer[strLen++] = LF;
@@ -133,7 +136,8 @@ char toHex(uint8_t val)
 
 uint8_t calculateCRC(void)
 {
-    uint8_t i = 0, crc = 0;
+    uint8_t i = 0;
+    uint8_t crc = 0;
 
     while(txBuffer[i++] != 0 || i >= UART_TX_BUF_LEN)
     {
