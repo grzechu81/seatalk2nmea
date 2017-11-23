@@ -13,14 +13,23 @@ typedef struct
 
 typedef struct
 {
-    uint16_t depth;
-    uint8_t  depthFr;
+    uint16_t depthFeet;
+    uint8_t  depthFeetFr;
+    uint16_t depthMeters;
+    uint8_t  depthMetersFr;
 } depth_t;
 
+typedef struct
+{
+    uint8_t speed;
+    uint8_t speedFr;
+} speed_t;
+
 void NMEA_Init(void);
-void NMEA_SendMWV(wind_t *wind);
-void NMEA_SendVHW(uint16_t speedKn);
-void NMEA_SendDBT(depth_t *depth);
+void NMEA_ProcessData(uint8_t* buffer, uint8_t length);
+void NMEA_SendMWV(wind_t* w);
+void NMEA_SendVHW(speed_t* s);
+void NMEA_SendDBT(depth_t* d);
 
 
 #endif
