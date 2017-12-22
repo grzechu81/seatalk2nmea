@@ -3,7 +3,7 @@
 #include "delay.h"
 #include "nmea.h"
 #include "seatalk.h"
-#include "debug.h"
+#include "diag.h"
 #include "watchdog.h"
 #include <string.h>
 
@@ -19,6 +19,7 @@ int main(void)
     NMEA_Init();
     ST_Init();
     WDOG_Init();
+    DIAG_Init();
 
     memset(&rawBuffer, 0, sizeof(st_buffer_t));
     
