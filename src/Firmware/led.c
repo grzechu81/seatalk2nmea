@@ -1,5 +1,6 @@
 #include "led.h"
-#include "stm32f10x.h"
+
+uint16_t ledPins[2] = {LED_TX_PIN, LED_RX_PIN};
 
 void LED_Init(void)
 {
@@ -8,21 +9,21 @@ void LED_Init(void)
     GPIO_InitTypeDef gpioLed;
     GPIO_StructInit(&gpioLed);
 
-    gpioLed.GPIO_Pin = GPIO_Pin_13;
+    gpioLed.GPIO_Pin = LED_TX_PIN | LED_RX_PIN;
     gpioLed.GPIO_Mode = GPIO_Mode_Out_OD;
     gpioLed.GPIO_Speed = GPIO_Speed_2MHz;
-
-    GPIO_Init(GPIOC, &gpioLed);
-    GPIO_SetBits(GPIOC, GPIO_Pin_13);
+    GPIO_Init(LED_PORT, &gpioLed);
+    
+    GPIO_SetBits(LED_PORT, LED_TX_PIN | LED_RX_PIN);
 }
 
-void LED_On(void)
+void LED_On(led_t ledId)
 {
-    GPIO_ResetBits(GPIOC, GPIO_Pin_13);
+    GPIO_ResetBits(LED_PORT, ledPins[ledId]);
 }
 
-void LED_Off(void)
+void LED_Off(led_t ledId)
 {
-    GPIO_SetBits(GPIOC, GPIO_Pin_13);
+    GPIO_SetBits(LED_PORT, ledPins[ledId]);
 }
 

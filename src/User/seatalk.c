@@ -1,6 +1,7 @@
 #include <misc.h>
 #include "seatalk.h"
 #include "cbuffer.h"
+#include "led.h"
 
 uint8_t rxState = RX_ID;
 uint16_t cbuffer[64];
@@ -51,7 +52,7 @@ uint8_t ST_ReadData(st_buffer_t* b)
     uint16_t value = 0;
     uint8_t data = 0;
     uint8_t retVal = ERR_NODATA;
-
+    
     while(CB_Read(&st_cbuffer, &value) == CB_SUCCESS)
     {
         switch(rxState)
@@ -70,6 +71,8 @@ uint8_t ST_ReadData(st_buffer_t* b)
                     {
                         b->buffer[(b->pos)++] = data;
                         rxState = RX_LENGTH;
+                        
+                        LED_On(Led_Rx);
                     }
                 }
                 break;
@@ -91,12 +94,14 @@ uint8_t ST_ReadData(st_buffer_t* b)
                     {
                         rxState = RX_ID;
                         retVal = ERR_SUCCESS;
+                        LED_Off(Led_Rx);
                     }
                 }
                 else
                 {
                     rxState = RX_ID;
                     retVal = ERR_BUFFER_OVF;
+                    LED_Off(Led_Rx);
                 }
                 break;
             }
