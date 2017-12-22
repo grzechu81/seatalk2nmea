@@ -9,6 +9,8 @@
 
 st_buffer_t rawBuffer;
 
+void initialBlink(void);
+
 //main function
 int main(void)
 {
@@ -22,6 +24,8 @@ int main(void)
     DIAG_Init();
 
     memset(&rawBuffer, 0, sizeof(st_buffer_t));
+    
+    initialBlink();
     
     while(1)
     {
@@ -40,3 +44,13 @@ int main(void)
         WDOG_FeedTheDog();
     }
 }
+
+void initialBlink(void)
+{
+    LED_On(Led_Tx);
+    LED_On(Led_Rx);
+    DELAY_ms(1000);
+    LED_Off(Led_Tx);
+    LED_Off(Led_Rx);
+}
+
