@@ -4,6 +4,7 @@
 #include "nmea.h"
 #include "seatalk.h"
 #include "debug.h"
+#include "watchdog.h"
 #include <string.h>
 
 st_buffer_t rawBuffer;
@@ -17,6 +18,7 @@ int main(void)
     DELAY_Init();
     NMEA_Init();
     ST_Init();
+    WDOG_Init();
 
     memset(&rawBuffer, 0, sizeof(st_buffer_t));
     
@@ -33,5 +35,7 @@ int main(void)
                 memset(&rawBuffer, 0, sizeof(st_buffer_t));
             }
         }
+        
+        WDOG_FeedTheDog();
     }
 }
