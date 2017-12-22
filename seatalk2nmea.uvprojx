@@ -394,6 +394,16 @@
               <FileType>1</FileType>
               <FilePath>.\src\User\nmea.c</FilePath>
             </File>
+            <File>
+              <FileName>cbuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\User\cbuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\User\common.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
