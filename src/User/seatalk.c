@@ -61,6 +61,7 @@ uint8_t ST_ReadData(st_buffer_t* b)
             {
                 if(value & 0x100)
                 {
+                    LED_On(Led_Rx);
                     data = value & 0x00ff;
                     
                     //Are we interested with this datagram ?
@@ -71,8 +72,6 @@ uint8_t ST_ReadData(st_buffer_t* b)
                     {
                         b->buffer[(b->pos)++] = data;
                         rxState = RX_LENGTH;
-                        
-                        LED_On(Led_Rx);
                     }
                 }
                 break;

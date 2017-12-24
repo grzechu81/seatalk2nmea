@@ -2,9 +2,9 @@
 #define _LED_H_
 #include "stm32f10x.h"
 
-#define LED_TX_PIN GPIO_Pin_13
-#define LED_RX_PIN GPIO_Pin_14
-#define LED_PORT GPIOC
+#define LED_TX_PIN GPIO_Pin_12
+#define LED_RX_PIN GPIO_Pin_13
+#define LED_PORT GPIOB
 
 typedef enum 
 {
