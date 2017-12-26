@@ -9,19 +9,16 @@
 
 st_buffer_t rawBuffer;
 
-void initialBlink(void);
-
-//main function
 int main(void)
 {
     uint8_t result;
 
     LED_Init();
-    DELAY_Init();
+    //DELAY_Init();
     NMEA_Init();
     ST_Init();
     WDOG_Init();
-    //DIAG_Init();
+    DIAG_Init();
 
     memset(&rawBuffer, 0, sizeof(st_buffer_t));
     
@@ -42,5 +39,8 @@ int main(void)
         }
         
         WDOG_FeedTheDog();
+#ifdef DEBUG
+        DIAG_Send();
+#endif
     }
 }

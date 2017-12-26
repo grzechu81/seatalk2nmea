@@ -4,9 +4,9 @@
 
 typedef struct
 {
-    uint8_t stMsgDropCntr;
-    uint16_t stMsgRcvd;
-    uint8_t stQueueCapacity;
+    uint32_t nmeaDropCounter;
+    uint8_t  nmeaBufferCapacity;
+    uint8_t  seatalkBufferCapacity;
 } diag_t;
 
 void DIAG_Init(void);
