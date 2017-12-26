@@ -21,11 +21,11 @@ int main(void)
     NMEA_Init();
     ST_Init();
     WDOG_Init();
-    DIAG_Init();
+    //DIAG_Init();
 
     memset(&rawBuffer, 0, sizeof(st_buffer_t));
     
-    initialBlink();
+    LED_Blink(LED_TX | LED_RX);
     
     while(1)
     {
@@ -44,13 +44,3 @@ int main(void)
         WDOG_FeedTheDog();
     }
 }
-
-void initialBlink(void)
-{
-    LED_On(Led_Tx);
-    LED_On(Led_Rx);
-    DELAY_ms(1000);
-    LED_Off(Led_Tx);
-    LED_Off(Led_Rx);
-}
-

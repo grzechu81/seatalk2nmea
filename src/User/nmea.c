@@ -209,7 +209,7 @@ uint8_t stringLength(void)
 
 void sendStringOverUart(void)
 {
-    LED_On(Led_Tx);
+    LED_Blink(LED_TX);
     txBufferPos = 0;
     USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 }
@@ -222,7 +222,6 @@ void USART2_IRQHandler(void)
         if(txBufferPos >= txBufferLength)
         {
             USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-            LED_Off(Led_Tx);
         }
     }
 }

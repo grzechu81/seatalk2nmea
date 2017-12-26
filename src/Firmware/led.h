@@ -6,15 +6,11 @@
 #define LED_RX_PIN GPIO_Pin_13
 #define LED_PORT GPIOB
 
-typedef enum 
-{
-    Led_Tx,
-    Led_Rx
-}led_t;
+#define LED_TX 0x01
+#define LED_RX 0x02
 
 void LED_Init(void);
-void LED_On(led_t led);
-void LED_Off(led_t led);
+void LED_Blink(uint8_t ledId);
 
 
 #endif

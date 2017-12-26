@@ -61,8 +61,8 @@ uint8_t ST_ReadData(st_buffer_t* b)
             {
                 if(value & 0x100)
                 {
-                    LED_On(Led_Rx);
                     data = value & 0x00ff;
+                    LED_Blink(LED_RX);
                     
                     //Are we interested with this datagram ?
                     if(data == AWA_ID || 
@@ -93,14 +93,13 @@ uint8_t ST_ReadData(st_buffer_t* b)
                     {
                         rxState = RX_ID;
                         retVal = ERR_SUCCESS;
-                        LED_Off(Led_Rx);
+                        //LED_Off(Led_Rx);
                     }
                 }
                 else
                 {
                     rxState = RX_ID;
                     retVal = ERR_BUFFER_OVF;
-                    LED_Off(Led_Rx);
                 }
                 break;
             }
@@ -113,6 +112,7 @@ uint8_t ST_ReadData(st_buffer_t* b)
             break;
         }
     }
+   
 
     return retVal;
 }
