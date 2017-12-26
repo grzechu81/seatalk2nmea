@@ -1,5 +1,6 @@
 #include "nmea.h"
 #include "led.h"
+#include "diag.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -8,9 +9,11 @@
 #define CR 0x0D
 #define LF 0x0A
 
+extern diag_t diagData;
 char txBuffer[UART_TX_BUF_LEN];
 uint8_t txBufferLength;
 uint8_t txBufferPos;
+volatile uint8_t writeOperationPending;
 
 wind_t wind;
 depth_t depth;
@@ -64,6 +67,12 @@ void NMEA_Init(void)
 
 void NMEA_ProcessData(uint8_t* buffer, uint8_t length)
 {
+    if(writeOperationPending)
+    {
+        diagData.nmeaDropCounter += 1;
+        return;
+    }
+    
     uint16_t temp = 0;
     
     switch(buffer[0])
@@ -209,6 +218,8 @@ uint8_t stringLength(void)
 
 void sendStringOverUart(void)
 {
+    writeOperationPending = 1;
+    
     LED_Blink(LED_TX);
     txBufferPos = 0;
     USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
@@ -222,6 +233,7 @@ void USART2_IRQHandler(void)
         if(txBufferPos >= txBufferLength)
         {
             USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+            writeOperationPending = 0;
         }
     }
 }

@@ -2,9 +2,12 @@
 #include "seatalk.h"
 #include "cbuffer.h"
 #include "led.h"
+#include "diag.h"
 
 uint8_t rxState = RX_ID;
 uint16_t cbuffer[64];
+
+extern diag_t diagData;
 
 CircularBuffer_t st_cbuffer = {
     .buffer = cbuffer,
@@ -113,6 +116,7 @@ uint8_t ST_ReadData(st_buffer_t* b)
         }
     }
    
+    diagData.seatalkBufferCapacity = CB_Capacity(&st_cbuffer);
 
     return retVal;
 }
