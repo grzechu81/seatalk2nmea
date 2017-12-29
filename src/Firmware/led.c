@@ -1,6 +1,8 @@
 #include "led.h"
 
-volatile uint8_t ledBlink = 0;
+volatile uint8_t ledBlinkState = 0;
+
+static void handleLed(uint8_t led, uint16_t ledPin);
 
 void LED_Init(void)
 {
@@ -10,7 +12,7 @@ void LED_Init(void)
     GPIO_InitTypeDef gpioLed;
     
     GPIO_StructInit(&gpioLed);
-    gpioLed.GPIO_Pin = LED_TX_PIN | LED_RX_PIN;
+    gpioLed.GPIO_Pin = LED_TX_PIN | LED_RX_PIN | LED_ERR_PIN;
     gpioLed.GPIO_Mode = GPIO_Mode_Out_PP;
     gpioLed.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init(LED_PORT, &gpioLed);
@@ -37,27 +39,28 @@ void LED_Init(void)
 
 void LED_Blink(uint8_t ledId)
 {
-   ledBlink |= ledId;
+   ledBlinkState |= ledId;
+}
+
+void handleLed(uint8_t led, uint16_t ledPin)
+{
+    if(ledBlinkState & led)
+    {
+        GPIO_SetBits(LED_PORT, ledPin);
+        ledBlinkState &= ~led;
+    }
+    else
+    {
+        GPIO_ResetBits(LED_PORT, ledPin);
+    }
 }
 
 //Timer 20ms
 void TIM3_IRQHandler()
 {
-    if(ledBlink & LED_TX)
-    {
-        GPIO_SetBits(LED_PORT, LED_TX_PIN);
-        ledBlink &= ~LED_TX;
-    }
-    else
-        GPIO_ResetBits(LED_PORT, LED_TX_PIN);
-    
-    if(ledBlink & LED_RX)
-    {
-        GPIO_SetBits(LED_PORT, LED_RX_PIN);
-        ledBlink &= ~LED_RX;
-    }
-    else
-        GPIO_ResetBits(LED_PORT, LED_RX_PIN);
+    handleLed(LED_TX, LED_TX_PIN);
+    handleLed(LED_RX, LED_RX_PIN);
+    handleLed(LED_ERR, LED_ERR_PIN);
     
     TIM3->SR &= ~(TIM_SR_UIF);
 }
